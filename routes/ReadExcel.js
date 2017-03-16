@@ -1,6 +1,5 @@
 var xlsx = require("node-xlsx");
 var classTB = require("../App_Code/classTable");
-//var dbTB= require("../App_Code/db");
 
 //读取EXCEL数据 [{"name":"Sheet1","data":[["A1","A2"],["Date1","Date2"],["Int1","Int2"]]}]
 var excelName='test.xlsx';
@@ -15,7 +14,6 @@ for(var i=0;i<data1.length;i++) {
     var tb = new classTB();
     tb.field1 = item[0];
     tb.field2 = item[1];
-
     tbList.push(tb);
 }
 
@@ -33,22 +31,43 @@ var collection = db.collection('tb1');
 
 
 //连接db
-db.open(function(err,db,callback) {
+db.open(function(err,db) {
     if (!err) {
+        console.log('=========================================================');
         console.log('connect db');
 
         //删除所有数据
-         collection.remove({});
+         collection.remove(function(err,result){
+             if(err)
+             {
+                 console.log('Error:'+ err);
+                 return;
+             }
+             console.log('=========================================================');
+             console.log('Delete:');
+             console.log(JSON.stringify(result));
+         });
 
         //保存数据
-        collection.insert(tbList, {safe:true},function(err,result){
+        collection.insert(tbList,function(err,result){
             if(err)
             {
                 console.log('Error:'+ err);
                 return;
             }
+            console.log('=========================================================');
+            console.log('Insert:');
             console.log(JSON.stringify(result));
         });
+
+        //查询数据
+        collection.find().toArray(function (err, docs) {
+            console.log('=========================================================');
+            console.log('find:');
+            console.log(JSON.stringify(docs));
+            console.log('=========================================================');
+        });
+
     }
 });
 
