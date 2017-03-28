@@ -7,5 +7,13 @@
   <body>
     <h1><%= title %></h1>
     <p>Welcome to <%= title %></p>
+    <form action="/" method="post" enctype="multipart/form-data">
+        <div>  
+            <span>添加文件</span>  
+            <input type="file" name="excelfield" id="cVideo" multiple="multiple" />
+            <input type="text" name="password"><br />
+        </div>
+        <input type="submit" value="上传文件" />  
+    </form>
   </body>
 </html>
